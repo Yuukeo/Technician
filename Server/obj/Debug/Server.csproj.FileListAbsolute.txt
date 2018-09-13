@@ -1,0 +1,7 @@
+C:\Users\fixte\OneDrive\Desktop\TFRP Code\Technician\DLLs\Technician.Server.net.dll
+C:\Users\fixte\OneDrive\Desktop\TFRP Code\Technician\DLLs\Technician.Server.net.pdb
+C:\Users\fixte\OneDrive\Desktop\TFRP Code\Technician\Server\obj\Debug\Server.csprojAssemblyReference.cache
+C:\Users\fixte\OneDrive\Desktop\TFRP Code\Technician\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
+C:\Users\fixte\OneDrive\Desktop\TFRP Code\Technician\Server\obj\Debug\Server.csproj.CopyComplete
+C:\Users\fixte\OneDrive\Desktop\TFRP Code\Technician\Server\obj\Debug\Technician.Server.net.dll
+C:\Users\fixte\OneDrive\Desktop\TFRP Code\Technician\Server\obj\Debug\Technician.Server.net.pdb
