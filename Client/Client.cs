@@ -11,8 +11,10 @@ namespace Client
 {
     public class Client : BaseScript
     {
+        private static bool onDuty = false;
         private const float StartHeading = 343f;
         private static readonly Vector3 StartJob = new Vector3(2769.38f, 1402.09f, 23.55f);
+
         private static readonly List<Vector3> Locations = new List<Vector3>
         {
             new Vector3(2455.32f, 1603.83f, 32.73f),
@@ -32,28 +34,35 @@ namespace Client
             Tick += OnTick;
         }
 
-        private static void CreateVehicle()
+        private static async Task HandleTechnician()
         {
-            TriggerEvent("chatMessage", "Got into create vehicle function");
-            var vehicle = API.CreateVehicle(2307837162, StartJob.X, StartJob.Y, StartJob.Z, StartHeading,
-                true, true);
-            API.SetVehicleOnGroundProperly(vehicle);
-            API.TaskWarpPedIntoVehicle(API.PlayerPedId(), vehicle, 0);
+            if (!onDuty)
+            {
+                onDuty = true;
+                var vehicle = await World.CreateVehicle(new Model(VehicleHash.Boxville), StartJob, StartHeading);
+                //var vehicle = Function.Call<Vehicle>(Hash.CREATE_VEHICLE, 3078201489, StartJob.X, StartJob.Y + 5f, StartJob.Z, StartHeading, true, false);
+                Game.PlayerPed.Task.EnterVehicle(vehicle, VehicleSeat.Driver, 5000);
+            }
+            else
+            {
+                Screen.DisplayHelpTextThisFrame($"You may only rent one ~g~Utility Truck~s~ at a time!");
+            }
         }
 
         private static async Task OnTick()
         {
             try
             {
-                if (API.GetEntityCoords(API.PlayerPedId(), true).DistanceToSquared(StartJob) < 400)
+                var distance = Game.PlayerPed.Position.DistanceToSquared(StartJob);
+                if (distance < 400)
                 {
                     World.DrawMarker(MarkerType.HorizontalCircleFat, StartJob, Vector3.Zero, new Vector3(0f, 0.5f, 0f), Vector3.One * 5f, Color.FromArgb(0, 255, 255));
-                    if (API.GetEntityCoords(API.PlayerPedId(), true).DistanceToSquared(StartJob) < 5f)
+                    if (distance < 5f)
                     {
-                        Screen.DisplayHelpTextThisFrame("Press ~y~E~w~ to start your job as a power technician!");
+                        Screen.DisplayHelpTextThisFrame($"Press ~INPUT_CONTEXT~ to retrieve a ~g~Utility Truck~s~");
                         if (Game.IsControlJustPressed(0, Control.Context))
                         {
-                            CreateVehicle();
+                            await HandleTechnician();
                         }
                     }
                 }
